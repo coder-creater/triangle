@@ -1,0 +1,105 @@
+<canvas id="canvas" width="500" height="500"></canvas>
+<script>
+    m=document.getElementById("canvas").getContext("2d")
+    //failed attempt at making a triangle
+    /*initTriangle=()=>{
+        m.moveTo(20,20);
+        m.beginPath();
+        m.lineTo(30,30);
+        m.lineTo(40,40);
+        m.lineTo(20,20);
+        m.fill();
+        m.closePath();
+    }*/
+    
+    //to initialize the square
+    mainSquare=(x,y,c,s)=>{
+        m.fillStyle=c
+        m.strokeRect(x,y,s,s) //(x,y) give coords for top left corner
+    }
+
+    //creating variables
+    var sideLength = 300;
+    var leftX = 50;
+    var rightX = leftX+sideLength;
+    var topY = 50;
+    var botY = topY+sideLength;
+    var lastCorner = 1;
+    var rounds = 100000;
+    var cornArray = [[leftX, topY],[rightX, topY],[leftX, botY],[rightX, botY]]
+    var testArray = [[1,2],[3,4],[5,6],[7,8]]
+    /*corner guide:
+        top left: 0
+        top right: 1
+        bottom left: 2
+        bottom right: 3
+    */
+
+    //random number chooser
+    random=(max)=>{
+        return Math.floor(Math.random()*max);
+    }
+
+    //picking corners:
+    pickCorner=()=>{
+        let corner = random(4);
+        while(corner == lastCorner){
+            corner = random(4);
+        }
+        lastCorner = corner;
+        return corner;
+    }
+
+    //picking starting points:
+    pickStartCoord=()=>{
+        let point = random(sideLength)+leftX;
+        return point;
+    }
+
+    //to calculate midway point
+    midway=(first, second, factor)=>{
+        if(first >= second){
+            return first - factor*((first - second));
+        }else if(first < second){
+            return first + factor*((second-first));
+        }
+    }
+
+    //draw a point:
+    drawPoint=(x,y,c,s)=>{
+        m.fillStyle=c
+        m.fillRect(x,y,s,s)
+    }
+
+    //draw fractal:
+    drawSquareFractal=()=>{
+        let startX = pickStartCoord();
+        let startY = pickStartCoord();
+        let factor = 1/4;
+        for (let i=0; i<rounds; i++){
+            let corner = pickCorner();
+            let cornX = cornArray[corner][0];
+            let cornY = cornArray[corner][1];
+            let endX = midway(startX, cornX, factor);
+            let endY = midway(startY, cornY, factor);
+            drawPoint(endX, endY, "Black", 2);
+            startX = endX;
+            startY = endY;
+            if(factor=1/4){
+                factor=3/7;
+            }else{
+                factor = 1/4;
+            }
+        }
+    }
+    
+    // for(let i=0; i<15;i++){
+    //     let corner = pickCorner();
+    //     console.log(corner)
+    //     console.log("testArray: "+testArray[corner][1]);
+    // }
+
+    mainSquare(leftX, topY, "Black", sideLength);
+    drawSquareFractal();
+
+</script>
