@@ -75,7 +75,7 @@
     drawSquareFractal=()=>{
         let startX = pickStartCoord();
         let startY = pickStartCoord();
-        let factor = 1/4;
+        let factor = 1/2;
         for (let i=0; i<rounds; i++){
             let corner = pickCorner();
             let cornX = cornArray[corner][0];
@@ -85,14 +85,37 @@
             drawPoint(endX, endY, "Black", 2);
             startX = endX;
             startY = endY;
-            if(factor=1/4){
-                factor=3/7;
+            if(factor=1/2){
+                factor=3/6;
             }else{
-                factor = 1/4;
+                factor = 1/2;
             }
+            requestAnimationFrame(drawSquareFractal);
         }
+
+        
     }
     
+    var startX = pickStartCoord();
+    var startY = pickStartCoord();
+    var factor = 1/2;
+
+    drawAnim=()=>{
+        let corner = pickCorner();
+        let cornX = cornArray[corner][0];
+        let cornY = cornArray[corner][1];
+        let endX = midway(startX, cornX, factor);
+        let endY = midway(startY, cornY, factor);
+        drawPoint(endX, endY, "Black", 2);
+        startX = endX;
+        startY = endY;
+        if(factor=1/2){
+            factor=3/6;
+        }else{
+            factor = 1/2;
+        }
+        requestAnimationFrame(drawAnim);
+    }
     // for(let i=0; i<15;i++){
     //     let corner = pickCorner();
     //     console.log(corner)
@@ -100,6 +123,6 @@
     // }
 
     mainSquare(leftX, topY, "Black", sideLength);
-    drawSquareFractal();
+    drawAnim();
 
 </script>
