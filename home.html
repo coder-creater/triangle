@@ -41,10 +41,18 @@
     }
 
     //picking corners:
-    pickCorner=()=>{
-        let corner = random(4);
+    pickCorner=(sides)=>{
+        let corner = random(sides);
         while(corner == lastCorner){
-            corner = random(4);
+            corner = random(sides);
+        }
+        lastCorner = corner;
+        return corner;
+    }
+    pickCorner2=()=>{
+        let corner = random(sides);
+        while(corner == lastCorner){
+            corner = random(sides);
         }
         lastCorner = corner;
         return corner;
@@ -77,7 +85,7 @@
         let startY = pickStartCoord();
         let factor = 1/2;
         for (let i=0; i<rounds; i++){
-            let corner = pickCorner();
+            let corner = pickCorner(4);
             let cornX = cornArray[corner][0];
             let cornY = cornArray[corner][1];
             let endX = midway(startX, cornX, factor);
@@ -103,7 +111,7 @@
     //draw a square fractal animated
     drawAnimSpeed=(speed)=>{
         for(let i=0;i<speed;i++){
-            let corner = pickCorner();
+            let corner = pickCorner(4);
             let cornX = cornArray[corner][0];
             let cornY = cornArray[corner][1];
             let endX = midway(startX, cornX, factor);
@@ -121,7 +129,7 @@
     }
 
     drawAnim=()=>{  
-        let corner = pickCorner();
+        let corner = pickCorner(4);
         let cornX = cornArray[corner][0];
         let cornY = cornArray[corner][1];            
         let endX = midway(startX, cornX, factor);
@@ -137,10 +145,11 @@
         requestAnimationFrame(drawAnim);
     }
 
-    drawAnimWhile=(speed)=>{  
+    drawAnimWhile=(speed)=>{
+        mainSquare(leftX, topY, "Black", sLength);  
         let der = 0
         while(der < speed){
-            let corner = pickCorner();
+            let corner = pickCorner(4);
             let cornX = cornArray[corner][0];
             let cornY = cornArray[corner][1];            
             let endX = midway(startX, cornX, factor);
@@ -160,12 +169,12 @@
     // var cornArray = [[leftX, topY],[rightX, topY],[leftX, botY],[rightX, botY]]
     drawSquareCustom=(leftX, topY, sLength, rounds, fact1, fact2)=>{
         mainSquare(leftX, topY, "Black", sLength);
-        var cornArray = [[leftX, topY],[leftX+sLength, topY],[leftX, topY+sLength],[leftX+sLength, topY+sLength]]
+        var cornArray = [[leftX, topY],[leftX+sLength, topY],[leftX, topY+sLength],[leftX+sLength, topY+sLength],]
         let startX = random(sLength)+leftX;
         let startY = random(sLength)+topY;
         let factor = fact1;
         for (let i=0; i<rounds; i++){
-            let corner = pickCorner();
+            let corner = pickCorner(4);
             let cornX = cornArray[corner][0];
             let cornY = cornArray[corner][1];
             let endX = midway(startX, cornX, factor);
@@ -180,16 +189,87 @@
             }
         }
     }
-;
-    drawSquareCustom(0, 0, 200, 10000, 1/3, 1/3);
-    drawSquareCustom(200, 0, 200, 10000, 1/3, 2/3);
-    // drawSquareCustom(400, 0, 200, 10000, 1/5, 3/5);
-    // drawSquareCustom(600, 0, 200, 10000, 1/5, 4/5);
-    drawSquareCustom(0, 200, 200, 10000, 2/3, 2/3);
+
+    // drawSquareCustom(0, 0, 200, 10000, 1/3, 1/3);
+    // drawSquareCustom(200, 0, 200, 10000, 1/3, 2/3);
+    // // drawSquareCustom(400, 0, 200, 10000, 1/5, 3/5);
+    // // drawSquareCustom(600, 0, 200, 10000, 1/5, 4/5);
+    // drawSquareCustom(0, 200, 200, 10000, 2/3, 2/3);
     // drawSquareCustom(200, 200, 200, 10000, 2/5, 3/5);
     // drawSquareCustom(400, 200, 200, 10000, 2/5, 4/5);
     // drawSquareCustom(600, 200, 200, 10000, 3/5, 3/5);
     // drawSquareCustom(200, 400, 200, 10000, 3/5, 4/5);
     // drawSquareCustom(400, 400, 200, 10000, 4/5, 4/5);
+    //drawAnim();
+
+    drawTriangleFractal=(leftX, botY, sLength, rounds, fact1, fact2)=>{
+        let cornArray = [[leftX, botY], [leftX+sLength, botY], [leftX+(sLength/2), botY-((sLength/2)*1.7321)]]
+        let startX = random(sLength)+leftX;
+        let startY = random(sLength)+(botY-sLength);
+        let factor = fact1;
+        let j = 0;
+        for(let i=0; i<rounds;i++){
+            let corner = random(3);
+            let cornX = cornArray[corner][0];
+            let cornY = cornArray[corner][1];
+            let endX = midway(startX, cornX, factor);
+            let endY = midway(startY, cornY, factor);
+            if(j>6){
+                drawPoint(endX, endY, "Black", 2);
+            }
+            startX = endX;
+            startY = endY;
+            if(factor == fact1){
+                factor = fact2;
+            }else{
+                factor = fact1;
+            }
+            j++;
+        }
+    }
+
+    //drawTriangleFractal(0, 500, 500, 5000, 1/2, 1/2);
+
+    drawPoly=(xCent, yCent, size, sides)=>{
+        m.beginPath();
+        m.moveTo(xCent+size*Math.cos(0),yCent+size*Math.sin(0));
+        for(let i=0;i<=sides;i++){
+            m.lineTo(xCent+size*Math.cos(i*2*Math.PI/sides),yCent+size*Math.sin(i*2*Math.PI/sides))
+        }
+        m.stroke();
+    }
+
+    customPolyFractal=(xCent, yCent, size, sides, rounds, fact1, fact2)=>{
+        let cornArray = [];
+        m.beginPath();
+        m.moveTo(xCent+size*Math.cos(0),yCent+size*Math.sin(0));
+        for(let i=0;i<=sides;i++){
+            let xNew=Math.ceil(xCent+size*Math.cos(i*2*Math.PI/sides));
+            let yNew=Math.ceil(yCent+size*Math.sin(i*2*Math.PI/sides));
+            m.lineTo(xNew,yNew);
+            cornArray.push([xNew,yNew])
+        }
+        m.stroke();
+        let startX = xCent;
+        let startY = yCent;
+        let factor = fact1;
+        for (let i=0; i<rounds; i++){
+            let corner = pickCorner((sides));
+            let cornX = cornArray[corner][0];
+            let cornY = cornArray[corner][1];
+            let endX = midway(startX, cornX, factor);
+            let endY = midway(startY, cornY, factor);
+            drawPoint(endX, endY, "Black", 2);
+            startX = endX;
+            startY = endY;
+            if(factor == fact1){
+                factor = fact2;
+            }else{
+                factor = fact1;
+            }
+        }
+    }
+    customPolyFractal(500,500,300,5,60000,2/4,2/4);
+    //drawSquareCustom(100,100,300,10000,1/2,1/2)
 
 </script>
