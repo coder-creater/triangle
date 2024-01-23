@@ -1,4 +1,4 @@
-<canvas id="canvas" width="500" height="500"></canvas>
+<canvas id="canvas" width="5000" height="5000"></canvas>
 <script>
     m=document.getElementById("canvas").getContext("2d")
     //failed attempt at making a triangle
@@ -25,7 +25,7 @@
     var topY = 50;
     var botY = topY+sideLength;
     var lastCorner = 1;
-    var rounds = 100000;
+    var rounds = 10000;
     var cornArray = [[leftX, topY],[rightX, topY],[leftX, botY],[rightX, botY]]
     var testArray = [[1,2],[3,4],[5,6],[7,8]]
     /*corner guide:
@@ -71,7 +71,7 @@
         m.fillRect(x,y,s,s)
     }
 
-    //draw fractal:
+    //draw square fractal:
     drawSquareFractal=()=>{
         let startX = pickStartCoord();
         let startY = pickStartCoord();
@@ -90,7 +90,7 @@
             }else{
                 factor = 1/2;
             }
-            requestAnimationFrame(drawSquareFractal);
+            
         }
 
         
@@ -100,10 +100,30 @@
     var startY = pickStartCoord();
     var factor = 1/2;
 
-    drawAnim=()=>{
+    //draw a square fractal animated
+    drawAnimSpeed=(speed)=>{
+        for(let i=0;i<speed;i++){
+            let corner = pickCorner();
+            let cornX = cornArray[corner][0];
+            let cornY = cornArray[corner][1];
+            let endX = midway(startX, cornX, factor);
+            let endY = midway(startY, cornY, factor);
+            drawPoint(endX, endY, "Black", 2);
+            startX = endX;
+            startY = endY;
+            if(factor=1/2){
+                factor=3/6;
+            }else{
+                factor = 1/2;
+            }
+        }
+        requestAnimationFrame(drawAnimSpeed);
+    }
+
+    drawAnim=()=>{  
         let corner = pickCorner();
         let cornX = cornArray[corner][0];
-        let cornY = cornArray[corner][1];
+        let cornY = cornArray[corner][1];            
         let endX = midway(startX, cornX, factor);
         let endY = midway(startY, cornY, factor);
         drawPoint(endX, endY, "Black", 2);
@@ -116,13 +136,60 @@
         }
         requestAnimationFrame(drawAnim);
     }
-    // for(let i=0; i<15;i++){
-    //     let corner = pickCorner();
-    //     console.log(corner)
-    //     console.log("testArray: "+testArray[corner][1]);
-    // }
 
-    mainSquare(leftX, topY, "Black", sideLength);
-    drawAnim();
+    drawAnimWhile=(speed)=>{  
+        let der = 0
+        while(der < speed){
+            let corner = pickCorner();
+            let cornX = cornArray[corner][0];
+            let cornY = cornArray[corner][1];            
+            let endX = midway(startX, cornX, factor);
+            let endY = midway(startY, cornY, factor);
+            drawPoint(endX, endY, "Black", 2);
+            startX = endX;
+            startY = endY;
+            if(factor=1/2){
+                factor=3/6;
+            }else{
+                factor = 1/2;
+            }
+            der += 1;
+        }
+        requestAnimationFrame(drawAnimWhile);
+    }
+    // var cornArray = [[leftX, topY],[rightX, topY],[leftX, botY],[rightX, botY]]
+    drawSquareCustom=(leftX, topY, sLength, rounds, fact1, fact2)=>{
+        mainSquare(leftX, topY, "Black", sLength);
+        var cornArray = [[leftX, topY],[leftX+sLength, topY],[leftX, topY+sLength],[leftX+sLength, topY+sLength]]
+        let startX = random(sLength)+leftX;
+        let startY = random(sLength)+topY;
+        let factor = fact1;
+        for (let i=0; i<rounds; i++){
+            let corner = pickCorner();
+            let cornX = cornArray[corner][0];
+            let cornY = cornArray[corner][1];
+            let endX = midway(startX, cornX, factor);
+            let endY = midway(startY, cornY, factor);
+            drawPoint(endX, endY, "Black", 2);
+            startX = endX;
+            startY = endY;
+            if(factor == fact1){
+                factor = fact2;
+            }else{
+                factor = fact1;
+            }
+        }
+    }
+;
+    drawSquareCustom(0, 0, 200, 10000, 1/3, 1/3);
+    drawSquareCustom(200, 0, 200, 10000, 1/3, 2/3);
+    // drawSquareCustom(400, 0, 200, 10000, 1/5, 3/5);
+    // drawSquareCustom(600, 0, 200, 10000, 1/5, 4/5);
+    drawSquareCustom(0, 200, 200, 10000, 2/3, 2/3);
+    // drawSquareCustom(200, 200, 200, 10000, 2/5, 3/5);
+    // drawSquareCustom(400, 200, 200, 10000, 2/5, 4/5);
+    // drawSquareCustom(600, 200, 200, 10000, 3/5, 3/5);
+    // drawSquareCustom(200, 400, 200, 10000, 3/5, 4/5);
+    // drawSquareCustom(400, 400, 200, 10000, 4/5, 4/5);
 
 </script>
