@@ -165,7 +165,7 @@ m=document.getElementById("canvas").getContext("2d")
         requestAnimationFrame(drawAnimWhile);
     }
     // var cornArray = [[leftX, topY],[rightX, topY],[leftX, botY],[rightX, botY]]
-    function drawSquareCustom(leftX, topY, sLength, rounds, fact1, fact2){
+    drawSquareCustom=(leftX, topY, sLength, rounds, fact1, fact2)=>{
         mainSquare(leftX, topY, "Black", sLength);
         var cornArray = [[leftX, topY],[leftX+sLength, topY],[leftX, topY+sLength],[leftX+sLength, topY+sLength],]
         let startX = random(sLength)+leftX;
@@ -187,17 +187,6 @@ m=document.getElementById("canvas").getContext("2d")
             }
         }
     }
-    // drawSquareCustom(0, 0, 200, 10000, 1/3, 1/3);
-    // drawSquareCustom(200, 0, 200, 10000, 1/3, 2/3);
-    // // drawSquareCustom(400, 0, 200, 10000, 1/5, 3/5);
-    // // drawSquareCustom(600, 0, 200, 10000, 1/5, 4/5);
-    // drawSquareCustom(0, 200, 200, 10000, 2/3, 2/3);
-    // drawSquareCustom(200, 200, 200, 10000, 2/5, 3/5);
-    // drawSquareCustom(400, 200, 200, 10000, 2/5, 4/5);
-    // drawSquareCustom(600, 200, 200, 10000, 3/5, 3/5);
-    // drawSquareCustom(200, 400, 200, 10000, 3/5, 4/5);
-    // drawSquareCustom(400, 400, 200, 10000, 4/5, 4/5);
-    //drawAnim();
 
     drawTriangleFractal=(leftX, botY, sLength, rounds, fact1, fact2)=>{
         let cornArray = [[leftX, botY], [leftX+sLength, botY], [leftX+(sLength/2), botY-((sLength/2)*1.7321)]]
@@ -268,16 +257,7 @@ m=document.getElementById("canvas").getContext("2d")
         }
     }
 
-    drawFinalPoly=()=>{
-        let size = document.getElementById("size").value;
-        let sides = document.getElementById("sides").value;
-        let rounds = document.getElementById("rounds").value;
-        let f1 = document.getElementById("factor1").value;
-        let f2 = document.getElementById("factor2").value;
-        customPolyFractal(500,500,size,sides,rounds,f1,f2);
-    }
-
-    drawFinalSqare=()=>{
+    drawFinalPoly_v1=()=>{
         let size = document.getElementById("size").value;
         let sides = document.getElementById("sides").value;
         let rounds = document.getElementById("rounds").value;
@@ -286,5 +266,27 @@ m=document.getElementById("canvas").getContext("2d")
         customPolyFractal(500,500,size,sides,rounds,f1,f2);
     }
     
+    drawFinalPoly_v2=()=>{
+        let elementList = {"size":0, "sides":0, "rounds":0, "factor1":0, "factor2":0};
+        for(var key in elementList){
+            elementList[key] = document.getElementsByClassName("poly")[key]["value"];
+        }
+        customPolyFractal(500,500,elementList["size"],elementList["sides"],elementList["rounds"],elementList["factor1"],elementList["factor2"]);
+    }
+
+    drawFinalSquare=()=>{
+        let elementList = {"size":0, "rounds":0, "factor1":0, "factor2":0};
+        for(var key in elementList){
+            elementList[key] = document.getElementsByClassName("square")[key]["value"];
+        }
+        let y = document.getElementsByClassName("square")["size"]["value"];
+        drawSquareCustom(500,500,200,elementList["rounds"],elementList["factor1"],elementList["factor2"]);
+    }
+
+    test=()=>{
+        drawSquareCustom(500,500,elementList["size"],elementList["rounds"],elementList["factor1"],elementList["factor2"]);
+    }
+
+     
     //customPolyFractal(500,500,300,5,60000,2/4,2/4)
     //drawSquareCustom(100,100,300,10000,1/2,1/2)

@@ -4,19 +4,21 @@
     <h1>The Fractal Generator: Polygons</h1>
 </head>
 <body>
-    <a href="squareFractal.html"><button>Square Fractals</button></a><br>
-    <br>
-    <input type="number" id="size" placeholder="size"><br>
-    <br>
-    <input type="number" id="sides" placeholder="number of sides"><br>
-    <br>
-    <input type="number" id="rounds" placeholder="number of rounds"><br>
-    <br>
-    <input type="number" id="factor1" placeholder="factor 1"><br>
-    <br>
-    <input type="number" id="factor2" placeholder="factor 2"><br>
-    <br>
-    <button onclick="drawFinalPoly()">regenerate</button>
+    <div class="poly">
+        <a href="squareFractal.html"><button>Square Fractals</button></a><br>
+        <br>
+        <input type="number" class="poly" id="size" placeholder="size" value="500"><br>
+        <br>
+        <input type="number" class="poly" id="sides" placeholder="number of sides" value="5"><br>
+        <br>
+        <input type="number" class="poly" id="rounds" placeholder="number of rounds" value="50000"><br>
+        <br>
+        <input type="number" class="poly" id="factor1" placeholder="factor 1" value="0.5"><br>
+        <br>
+        <input type="number" class="poly" id="factor2" placeholder="factor 2" value="0.5"><br>
+        <br>
+        <button onclick="drawFinalPoly_v2()">regenerate</button>
+    </div>
 </body>
 <canvas id="canvas" width="5000" height="5000"></canvas>
 <script src="gen.js"></script>

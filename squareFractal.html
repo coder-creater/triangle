@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <h1>The Fractal Generator: Squares</h1>
+</head>
+<body>
+    <a href="polyFractal.html"><button>Polygonal Fractals</button></a><br>
+    <br>
+    <input type="number" class="square" id="size" placeholder="size" value="200"><br>
+    <br>
+    <input type="number" class="square" id="rounds" placeholder="number of rounds" value="20000"><br>
+    <br>
+    <input type="number" class="square" id="factor1" placeholder="factor 1" value="0.5"><br>
+    <br>
+    <input type="number" class="square" id="factor2" placeholder="factor 2" value="0.5"><br>
+    <br>
+    <button onclick="drawFinalSquare()">regenerate</button>
+</body>
+<canvas id="canvas" width="5000" height="5000"></canvas>
+<script src="gen.js"></script>
+</html>
